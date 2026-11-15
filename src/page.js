@@ -508,7 +508,7 @@ function client(BOOT) {
   }
 }
 
-export function page({ mode = 'learn', lab = null, login = '', model = false, computers = false, notice = '' } = {}) {
+export function page({ mode = 'learn', lab = null, login = '', model = false, computers = false, notice = '', canonical = '' } = {}) {
   const boot = { mode, lab: lab?.id || null, login, model, computers, parts: PARTS.map((p) => ({ id: p.id, labs: p.labs })), labs: Object.fromEntries(LAB_CARDS.map((l) => [l.id, { id: l.id, steps: l.steps }])) };
   const title = lab ? `${lab.title} · Flisk Learn` : `${MODES[mode].label} · Flisk Learn`;
   const view = mode === 'exam' ? examView() : mode === 'practice' ? (lab ? labView(lab, login, computers) : labList()) : learnView();
@@ -518,6 +518,7 @@ export function page({ mode = 'learn', lab = null, login = '', model = false, co
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>${esc(title)}</title>
+${canonical ? `<link rel="canonical" href="${esc(canonical)}">` : ''}
 <meta name="description" content="Learn Flisk and AI engineering: answers from the docs, labs on your own computer, and an exam scored on real work.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23000'/%3E%3Cpath d='M9 8v16h14' fill='none' stroke='%23EDEDEE' stroke-width='3.5'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

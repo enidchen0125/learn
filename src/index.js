@@ -163,7 +163,7 @@ export async function handle(request, env, { fetchImpl = fetch, cache = globalTh
     if (!MODES.includes(mode) || extra !== undefined || (second !== undefined && mode !== 'practice')) return html(page({ ...seen, mode: 'learn', notice: 'That page does not exist.' }), 404);
     const lab = second === undefined ? null : labById(second);
     if (second !== undefined && !lab) return html(page({ ...seen, mode: 'practice', notice: 'That lab does not exist.' }), 404);
-    return html(page({ ...seen, mode, lab }));
+    return html(page({ ...seen, mode, lab, canonical: `${new URL(origin).origin}${mode === 'learn' ? '/' : path}` }));
   }
 
   if (request.method !== 'POST') return json(405, { error: 'GET or POST' });
