@@ -19,6 +19,14 @@ test.each(['https://learn.flisk.si', 'https://learn.flisk.si/'])('canonical uses
   expect(await canonicals('/?source=preview', { PUBLIC_ORIGIN: origin }, 'https://preview.test')).toEqual(['https://learn.flisk.si/']);
 });
 
+test.each(['/', '/practice', '/exam'])('alternate-host %s defaults to the primary public origin', async (path) => {
+  expect(await canonicals(`${path}?source=preview`, {}, 'https://preview.test')).toEqual([`https://learn.flisk.si${path}`]);
+});
+
+test('an explicit public origin still overrides the primary canonical default', async () => {
+  expect(await canonicals('/practice?source=preview', { PUBLIC_ORIGIN: 'https://academy.example/' }, 'https://preview.test')).toEqual(['https://academy.example/practice']);
+});
+
 test.each(['/practice', '/exam'])('the shared head gives %s its own path without the query', async (path) => {
   expect(await canonicals(`${path}?source=test`)).toEqual([`https://learn.flisk.si${path}`]);
 });
